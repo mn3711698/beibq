@@ -1,8 +1,9 @@
 # beibq
 
-https://youapi.janedao.cn/  这是我部署好的，服务器是1C2G1M的云，
-系统是freebsd,http服务器是nginx+apache24(python3.6+postgresql10)
+https://youapi.janedao.cn/  这是我部署好的
 
+
+服务器是1C2G1M的云，系统是freebsd,http服务器是nginx+apache24(python3.6+postgresql10)
 
 
 国内下载代码请到码云 https://gitee.com/mn3711698/beibq
@@ -39,6 +40,7 @@ beibq的编辑器界面简洁、操作简单，能够通过工具栏或快捷键
 #### 1. 安装postgresql及依赖包
 安装postgtesql数据库  https://www.postgresql.org/download/   
 可以在这个链接下载安装及找到安装的说明文档
+数据库采用默认的5432端口，您需要修改成您自己的。
 ```
 pip3 install -r requirements.txt
 ```
