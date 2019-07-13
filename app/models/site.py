@@ -1,6 +1,6 @@
 #coding: utf-8
 from app.models.model import *
-from sqlalchemy.dialects.mysql import LONGTEXT
+
 
 
 PREFIX = "site_"
@@ -9,17 +9,17 @@ PREFIX = "site_"
 class SiteMeta(db.Model):
     """ Site table """
     __tablename__ = db.PREFIX + PREFIX + "meta"
-    __table_args__ = {
-        "mysql_engine": "InnoDB",
-        "mysql_charset": "utf8"
-    }
+    # __table_args__ = {
+    #     "mysql_engine": "InnoDB",
+    #     "mysql_charset": "utf8"
+    # }
     id = db.Column(db.Integer, primary_key = True, nullable = False)
-    name = db.Column(db.String(255), nullable = False, index = True)
-    value = db.deferred(db.Column(LONGTEXT, default="", nullable = False))
+    name = db.Column(db.Text, nullable = False, index = True)
+    value = db.deferred(db.Column(db.Text, default="", nullable = False))
 
     @staticmethod
     def add(data):
-        for name, value in data.iteritems():
+        for name, value in data.items():
             meta = SiteMeta.query.filter_by(name=name).first()
             if meta is not None:
                 continue
@@ -29,7 +29,7 @@ class SiteMeta(db.Model):
 
     @staticmethod
     def setting(data):
-        for name, value in data.iteritems():
+        for name, value in data.items():
             meta = SiteMeta.query.filter_by(name=name).first()
             if not meta:
                 meta = SiteMeta(name=name, value=value)

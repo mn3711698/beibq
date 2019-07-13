@@ -13,9 +13,9 @@
 {%block styles%}
 {%if config.get("DEBUG")%}
 {%include "_common-css.html"%}
-<link rel="stylesheet" href="{{url_for("static", filename="css/web/reader.css")}}">
+<link rel="stylesheet" href="{{url_for(".static", filename="css/web/reader.css")}}">
 {%else%}
-<link rel="stylesheet" href="{{url_for("static", filename="dist/css/reader.min.css")}}">
+<link rel="stylesheet" href="{{url_for(".static", filename="dist/css/reader.min.css")}}">
 {%endif%}
 
 {{super()}}
@@ -52,7 +52,7 @@
 
                 <div class="site">
                     <a class="logo" href="{{url_for("web.index")}}">
-                        <img src="{{url_for("static", filename="img/logo.png")}}">
+                        <img src="{{url_for(".static", filename="img/logo.png")}}">
                     </a>
                     <div class="name">
                         <a href="{{url_for("web.index")}}">{{site["name"]|upper}}</a>
@@ -121,10 +121,10 @@
 
 {%if config.get("DEBUG")%}
 {%include "_common-js.html"%}
-<script src="{{url_for("static", filename="asserts/mousetrap/mousetrap.js")}}"></script>
-<script src="{{url_for("static", filename="js/web/reader.js")}}"></script>
+<script src="{{url_for(".static", filename="asserts/mousetrap/mousetrap.js")}}"></script>
+<script src="{{url_for(".static", filename="js/web/reader.js")}}"></script>
 {%else%}
-<script src="{{url_for("static", filename="dist/js/reader.min.js")}}"></script>
+<script src="{{url_for(".static", filename="dist/js/reader.min.js")}}"></script>
 {%endif%}
 
 

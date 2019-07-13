@@ -13,16 +13,16 @@ PREFIX = ""
 class User(UserMixin, db.Model):
     """ user table """
     __tablename__ = db.PREFIX + PREFIX + "user"
-    __table_args__ = {
-        "mysql_engine": "InnoDB",
-        "mysql_charset": "utf8"
-    }
+    # __table_args__ = {
+    #     "mysql_engine": "InnoDB",
+    #     "mysql_charset": "utf8"
+    # }
 
     id = db.Column(db.Integer, primary_key = True, nullable=False)
-    username = db.Column(db.String(255), unique=True, nullable=False, index=True, default="")
-    nickname = db.Column(db.String(255), nullable = False, default="")
-    password =  db.Column(db.String(255), default="")
-    avatar = db.Column(db.String(255),  default="")
+    username = db.Column(db.Text, unique=True, nullable=False, index=True, default="")
+    nickname = db.Column(db.Text, nullable = False, default="")
+    password =  db.Column(db.Text, default="")
+    avatar = db.Column(db.Text,  default="")
     updatetime = db.Column(db.DateTime, default = datetime.now, nullable=False)
     timestamp = db.Column(db.DateTime, default = datetime.now, nullable=False)
     books = db.relationship("Book", backref="user", lazy="dynamic")
@@ -58,7 +58,7 @@ class User(UserMixin, db.Model):
         self.nickname = nickname
 
     def change_password(self, password):
-        print 'password', password
+        print('password', password)
         self.password = generate_password_hash(password)
 
     def verify_password(self, password):

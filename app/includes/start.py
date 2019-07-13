@@ -1,5 +1,5 @@
 #coding: utf-8
-import os
+import os,psycopg2
 from flask import current_app, render_template
 from sqlalchemy import *
 
@@ -36,16 +36,16 @@ def create_path(app):
             os.makedirs(path)
 
 
-def connect_mysql(url):
+def connect_pgsql(url):
     """1049 => 数据库不存在
        2005 => 主机地址错误
        1045 => 用户名密码错误"""
+
     try:
         engine = create_engine(url)
         connection = engine.connect()
-    except Exception as e:
-        code, _ = e.orig
-        return code
+    except:
+        return 1
     return 0
 
 

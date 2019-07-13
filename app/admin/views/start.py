@@ -10,22 +10,20 @@ from app.includes.start import *
 def setup_step2():
     form = ConfigForm()
     if form.validate_on_submit():
-        host= form.host.data.encode("utf8")
-        username = form.username.data.encode("utf8")
-        password = form.password.data.encode("utf8")
-        db_name = form.db.data.encode("utf8")
-        url = 'mysql+mysqldb://{0}:{1}@{2}/{3}?charset=utf8'.format(username,
-            password, host, db_name)
-        code = connect_mysql(url)
+        host= form.host.data
+        username = form.username.data
+        password = form.password.data
+        db_name = form.db.data
+        #url = 'mysql+mysqldb://{0}:{1}@{2}/{3}?charset=utf8'.format(username,password, host, db_name)
+        url='postgresql+psycopg2://%s:%s@%s:5432/%s'%(username,password, host, db_name)
+        code = connect_pgsql(url)
+
         if not code:
             create_config(username, password, host, db_name)
             from app.config import Config
             current_app.config.from_object(Config)
             return render_template("admin/start/setup-step2.html")
-        elif code == 1045:
-            return render_template("admin/start/setup-error.html", code=1)
-        elif code == 1049:
-            return render_template("admin/start/setup-error.html", code=2)
+
     return render_template("admin/start/setup-error.html", code=3)
 
 

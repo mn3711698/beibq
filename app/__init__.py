@@ -2,6 +2,7 @@
 from flask import Flask, redirect, url_for, request
 from datetime import datetime
 from flask_bootstrap import Bootstrap
+from .models.model import db, login_manager
 from app.config_default import Config as DefaultConfig
 
 
@@ -18,6 +19,7 @@ def check_start(app, db):
             load_site(app)
             app.start = True
             return
+
     @app.before_request
     def request_check_start():
         if app.start:
@@ -55,7 +57,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(DefaultConfig)
 
-    from models.model import db, login_manager
+
 
     bootstrap.init_app(app)
     db.init_app(app)

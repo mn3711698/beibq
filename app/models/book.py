@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 from app.models.model import *
 from app.models.user import User
 from app.includes import file
-from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.orm import load_only
 from sqlalchemy import func
 
@@ -14,14 +13,14 @@ PREFIX="book_"
 
 
 class Book(db.Model):
-    __table_args__ = {
-        "mysql_engine": "InnoDB",
-        "mysql_charset": "utf8"
-    }
+    # __table_args__ = {
+    #     "mysql_engine": "InnoDB",
+    #     "mysql_charset": "utf8"
+    # }
     __tablename__ = db.PREFIX + PREFIX + "book"
 
     id = db.Column(db.Integer, primary_key = True, nullable=False)
-    name = db.Column(db.String(255), default="", nullable=False, index=True)
+    name = db.Column(db.Text, default="", nullable=False, index=True)
     access = db.Column(db.Integer, default=1, nullable=False, index=True)
     status = db.Column(db.Integer, default=0, nullable=False, index=True)       # publish status
     brief = db.deferred(db.Column(db.Text, default="", nullable=False))
@@ -29,7 +28,7 @@ class Book(db.Model):
     publish_timestamp = db.Column(db.DateTime, default=datetime.now, nullable=False, index=True)
     updatetime = db.Column(db.DateTime, default = datetime.now, nullable=False, index=True)
     timestamp = db.Column(db.DateTime, default = datetime.now, nullable=False, index=True)
-    cover = db.Column(db.String(255), default="", nullable=False)
+    cover = db.Column(db.Text, default="", nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey(User.__tablename__+".id", 
         ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
 
@@ -93,7 +92,7 @@ class Book(db.Model):
             "parent_id", "pos", "is_dir", "book_id")).all()
         catalog_dict = {}
         for catalog in catalogs:
-            if not catalog_dict.has_key(catalog.parent_id):
+            if not catalog.parent_id in catalog_dict:
                 catalog_dict[catalog.parent_id] = []
             catalog_dict[catalog.parent_id].append(catalog)
         return self._deep_catalogs(
@@ -151,19 +150,19 @@ class Book(db.Model):
 
 
 class BookCatalog(db.Model):
-    __table_args__ = {
-        "mysql_engine": "InnoDB",
-        "mysql_charset": "utf8"
-    }
+    # __table_args__ = {
+    #     "mysql_engine": "InnoDB",
+    #     "mysql_charset": "utf8"
+    # }
     __tablename__ = db.PREFIX+PREFIX+"catalog"
     id = db.Column(db.Integer, primary_key = True, nullable=False)
-    title = db.Column(db.String(255), default="", nullable=False, index=True)
-    markdown = db.deferred(db.Column(LONGTEXT, default="", nullable=False))
-    html = db.deferred(db.Column(LONGTEXT, default="", nullable=False))
-    publish_markdown = db.deferred(db.Column(LONGTEXT, default='', nullable=False))
-    publish_html = db.deferred(db.Column(LONGTEXT, default='', nullable=False))
+    title = db.Column(db.Text, default="", nullable=False, index=True)
+    markdown = db.deferred(db.Column(db.Text, default="", nullable=False))
+    html = db.deferred(db.Column(db.Text, default="", nullable=False))
+    publish_markdown = db.deferred(db.Column(db.Text, default='', nullable=False))
+    publish_html = db.deferred(db.Column(db.Text, default='', nullable=False))
     status = db.Column(db.Integer, default=0, nullable = True, index = True)
-    abstract = db.deferred(db.Column(db.String(255), default=""))
+    abstract = db.deferred(db.Column(db.Text, default=""))
     publish_order = db.Column(db.Integer, default=0, nullable=True, index = True)
     pos = db.Column(db.Integer, default=0, nullable=False, index=True)
     parent_id = db.Column(db.Integer, default = 0, nullable=False, index=True)
@@ -365,14 +364,14 @@ class BookCatalog(db.Model):
 
 
 class BookImage(db.Model):
-    __table_args__ = {
-        "mysql_engine": "InnoDB",
-        "mysql_charset": "utf8"
-    }
+    # __table_args__ = {
+    #     "mysql_engine": "InnoDB",
+    #     "mysql_charset": "utf8"
+    # }
     __tablename__ = db.PREFIX + PREFIX + "image"
     id = db.Column(db.Integer, primary_key = True, nullable=False)
-    name = db.Column(db.String(255), default="", nullable=False)
-    filename = db.Column(db.String(255), default="", nullable=False)
+    name = db.Column(db.Text, default="", nullable=False)
+    filename = db.Column(db.Text, default="", nullable=False)
     book_id = db.Column(db.Integer, db.ForeignKey(Book.__tablename__+".id", 
         ondelete="CASCADE", onupdate="CASCADE"), nullable=False)
     timestamp = db.Column(db.DateTime, default = datetime.now, nullable=False)
